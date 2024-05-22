@@ -168,7 +168,7 @@ void count_moves(t_stack **stack_a, t_stack **stack_b, int size)
 		printf("stackb== %i\n", tmp->data);
 		tmp = tmp->next;
 	}
-	//sleep(5);
+	sleep(1);
 	tmpb = *stack_b;
 	while (tmpb)
 	{
@@ -204,12 +204,12 @@ void count_moves(t_stack **stack_a, t_stack **stack_b, int size)
 			counter.posi = counter.moves_a;
 			if (counter.moves_a >  (size_a / 2))
 				counter.moves_a = size_a - counter.moves_a ;
-			printf("up ======== %i\n",counter.moves_a);
+			//printf("up ======== %i\n",counter.moves_a);
 		}
 		//number_moves ;  /*+  (size - i + 1)* (i >= (size - 15))*/;
 		counter.moves_a += move_b;
-		if (tmpb->data == 6)
-			printf("-%i === movea22 , move_b = %i\n", counter.moves_a, move_b);
+		//if (tmpb->data == 6)
+			//printf("-%i === movea22 , move_b = %i\n", counter.moves_a, move_b);
 		//if (i>15)
 		//	printf("num ===%i ,   moves ==%i\n", i, number_moves);
 	//	sleep(2);
@@ -227,7 +227,7 @@ void count_moves(t_stack **stack_a, t_stack **stack_b, int size)
 		i++;
 	}
 	//sleep(2);
-	printf("position_number == %i, moves == %i, position_in_a == %i     a_v  == %i\n",counter.position_in_b, counter.moves, counter.position_in_a , counter.moves_a_v);
+	//printf("position_number == %i, moves == %i, position_in_a == %i     a_v  == %i\n",counter.position_in_b, counter.moves, counter.position_in_a , counter.moves_a_v);
 	////[[0printf("2---,up ======== %i\n",counter.moves_a);
 
 	if (counter.position_in_a >= (counter.position_in_b - 1))
@@ -241,7 +241,7 @@ void count_moves(t_stack **stack_a, t_stack **stack_b, int size)
 	// 	counter.moves_back = counter.moves_a_v - counter.moves_back ; 
 	if ((counter.position_in_a <= (size_a / 2) &&  counter.position_in_b <= (size / 2)) /*|| (counter.position_in_b - 1 >= size_a)|| (counter.moves_op <= counter.moves_a_v)*/)
 	{
-		printf("-----frist-----\n");
+	//	printf("-----frist-----\n");
 		//  if (counter.moves_op <= counter.moves_a_v)
 		// 			printf("///////////////////////////////nessssssssssss\n/////////// //////////////////////////////");
 
@@ -266,15 +266,16 @@ void count_moves(t_stack **stack_a, t_stack **stack_b, int size)
 			count++;
 		}
 	}
-	else if ((counter.position_in_a > (size_a / 2) &&  counter.position_in_b > (size / 2)) /*|| (counter.moves_back <= counter.moves_a_v)*/)
+	else if (size != 1 && (counter.position_in_a > (size_a / 2) &&  counter.position_in_b > (size / 2)) /*|| (counter.moves_back <= counter.moves_a_v)*/)
 	{
-				printf("-----seconde-----\n");
+			//	printf("-----seconde-----\n");
 			// if ((counter.moves_back <= counter.moves_a_v))
 			// 	printf("///////////////////////////////yessssssssssss\n/////////////////////////////////////////");
 			counter.position_in_b = counter.moves - counter.moves_a_v  + 1 ;
 			//counter.moves_a_v =  size_a - counter.moves_a_v;
 		while (counter.moves > 0)
 		{
+			//printf("size == %i , mpves_a == %i\n",size, counter.position_in_b);
 			if (counter.position_in_b != 1 && counter.moves_a_v != 0)
 			{
 				ft_add_front(stack_a, last_node(*stack_a));
@@ -310,7 +311,7 @@ void count_moves(t_stack **stack_a, t_stack **stack_b, int size)
 		}
 		else
 		{
-			printf("HAN\n");
+			//printf("HAN\n");
 			//counter.moves_a_v =  size_a - counter.moves_a_v ;
 			while (counter.moves_a_v != 0)
 			{
@@ -329,12 +330,12 @@ void count_moves(t_stack **stack_a, t_stack **stack_b, int size)
 				count++;
 			}
 		}
-		else
+		else if (size != 1)
 		{
-						printf("Her\n");
-			sleep(3);
+					//	printf("Her\n");
+			//sleep(3);
 			counter.position_in_b = counter.posi ;
-			printf("res === %i\n",counter.position_in_b);
+		//	printf("res === %i\n",counter.position_in_b);
 			while (counter.position_in_b != 0)
 			{
 				ft_add_front(stack_b, last_node(*stack_b));
@@ -599,13 +600,13 @@ int main(int argc, char *argv[])
 	//printf("%p\n",stack_a->next);
 	sort_stack(&stack_a, argc-1);
 
-	// while (stack_a != NULL)
-	// {
-	// 	printf("2--%i\n", stack_a->data);
-	// 	stack_a = stack_a->next;
-	// }
-	// printf("\nnumber moves == %i\n", count);
-	 //if (count >= 700 )
-	 	printf("\nyessessss   moves == %i\n", count);
+// 	while (stack_a != NULL)
+// 	{
+// 		printf("2--%i\n", stack_a->data);
+// 		stack_a = stack_a->next;
+// 	}
+// //	printf("\nnumber moves == %i\n", count);
+// 	 if (count >= 5500 )
+// 	 	printf("\nyessessss   moves == %i\n", count);
 }
 //nekdar nzid dik kediya libhal likayen fel file push swap yenka y pushi oyedfa3 lka3 mli yejbar rakem lakherani fe stack sghir elihwalakin khesni nzid mli ykon kidor f stac_a yejbarch chi wa7id kbir elih 

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Generate a random sequence of numbers
-num_elements=49
+num_elements=69
 num_runs=0
 random_sequence=$(seq 0 $num_elements | sort -R | tr '\n' ' ')
 
