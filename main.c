@@ -152,23 +152,23 @@ void count_moves(t_stack **stack_a, t_stack **stack_b, int size)
 	i = 0;
 	counter.moves = 1000;
 	size_a++;
-	printf("yessssssss size %i\n", size);
-	printf ("\n-------------stack_a-----------\n");
-	tmp = *stack_a;
-	while (tmp != NULL)
-	{
-		printf("stacka== %i\n", tmp->data);
-		tmp = tmp->next;
-	}
-		printf ("\n-------------stack_b-----------\n");
+	// printf("yessssssss size %i\n", size);
+	// printf ("\n-------------stack_a-----------\n");
+	// tmp = *stack_a;
+	// while (tmp != NULL)
+	// {
+	// 	printf("stacka== %i\n", tmp->data);
+	// 	tmp = tmp->next;
+	// }
+	// 	printf ("\n-------------stack_b-----------\n");
 
-	tmp = *stack_b;
-	while (tmp != NULL)
-	{
-		printf("stackb== %i\n", tmp->data);
-		tmp = tmp->next;
-	}
-	sleep(1);
+	// tmp = *stack_b;
+	// while (tmp != NULL)
+	// {
+	// 	printf("stackb== %i\n", tmp->data);
+	// 	tmp = tmp->next;
+	// }
+	// sleep(1);
 	tmpb = *stack_b;
 	while (tmpb)
 	{
@@ -390,6 +390,78 @@ void count_moves(t_stack **stack_a, t_stack **stack_b, int size)
 		}
 	}*/
 }
+int best_part(t_stack *stack_a, int size, int range, int *num_element)
+{
+	int i;
+	float avr1;
+	float avr2;
+	int posi;
+	int posi2;
+
+	i = 0;
+	 avr1 = 0;
+	 avr2 = 0;
+	 posi = 0;
+	 posi2 = 0;
+	 //printf ("size === %i , range == %i\n", size, range);
+	 while (i <= (size / 2))
+	 {
+		if (stack_a->index <= range)
+		{	
+			//printf("------------yes\n");
+			avr1 += i;
+			posi++;
+		}
+		stack_a = stack_a->next;
+		i++;
+	 }
+
+	 while (i < size)
+	 {
+		if (stack_a->index <= range)
+		{	
+			//printf("------------up\n");
+			avr1 += (size - i);
+			posi2++;
+		}
+		stack_a = stack_a->next;
+		i++;
+	 }
+
+	//printf ("av1 == %f , av2 == %f , posi1 == %i, posi1 == %i\n", avr1, avr2 ,posi , posi2);
+//	sleep(2);
+	 avr1 /= posi;
+	 avr2 /= posi2;
+
+	if (avr2 != 0 &&  avr2< avr1)
+	{
+		*num_element = posi2;
+		return (2);
+	}
+	*num_element = posi;
+	return (1);
+}
+
+int search_max(t_stack *stack_a)
+{
+	int i;
+	int max;
+	int index;
+
+	max = stack_a->data;
+	i = 0;
+	while (stack_a)
+	{
+		if (max < stack_a->data)
+		{
+			index = i;
+			max = stack_a->data;
+		}
+		stack_a = stack_a->next;
+		i++;
+	}
+	return (i);
+}
 void sort_stack(t_stack **stack_a, int size)
 {
 	int		current_size;
@@ -399,21 +471,26 @@ void sort_stack(t_stack **stack_a, int size)
 	int		range;
 	int		part;
 	int check = 0;
+	int	number_elemnt;
+	int cpsize;
+	int	best;
+	int	max_index;
 
-	part = 42;
-	range = 42;
+	part = 80;
+	range = 80;
+	number_elemnt = 0;
 	current_size = size;
 	stack_b = NULL;
 	tmp = *stack_a;
-	while (current_size != 1)
+	while (current_size != 3)
 	{
 		check = 0;
 		last = last_node(*stack_a);
 		//printf("last == %i\n",(*stack_a)->index);
-		if (part == 0 && (range += 42) <= size)
-			part = 42;
+		if (part == 0 && (range += 80) <= size)
+			part = 80;
 		else if (part == 0)
-			part = size - (range - 42); 
+			part = size - (range - 80); 
 		if ((*stack_a)->index <= last->index && (*stack_a)->index <= range)
 		{
 			//printf("so\n");
@@ -430,9 +507,17 @@ void sort_stack(t_stack **stack_a, int size)
 		}
 		else
 		{
-			tmp =NULL;
+			if (number_elemnt == 0 || current_size == (cpsize - number_elemnt))
+			{
+				best = best_part(*stack_a, current_size,range, &number_elemnt);
+				cpsize = current_size;
+			}
+			if (best == 1)
+				ft_add_back(stack_a , *stack_a);
+			else
+				ft_add_back(stack_a , last);
+			tmp = NULL;
 			//printf("back\n");
-			ft_add_back(stack_a , *stack_a);
 			count++;
 		}
 		if (tmp != NULL || tmp == last)
@@ -454,6 +539,30 @@ void sort_stack(t_stack **stack_a, int size)
 	// 	tmp = tmp->next;
 	// }
 	//printf (" --------moves---%i-----\n",count);
+	last = last_node(*stack_a);
+	max_index = search_max(*stack_a);
+	if (max_index == 1)
+	{
+		if ((*stack_a)->index > last->index)
+			ft_add_front(stack_a , last);
+		else
+		{
+			ft_add_back(stack_a, *stack_a);
+			ft_add_back(stack_a, *stack_a);
+		}
+	}
+	else if (max_index == 0)
+	{
+		ft_add_back(stack_a, *stack_a);
+		if ((*stack_a)->index > (*stack_a)->next->index)
+			ft_swap(stack_a);
+	}
+	else
+	{
+		if ((*stack_a)->index > (*stack_a)->next->index)
+			ft_swap(stack_a);
+	}
+	count += 2;
 	while (stack_b != NULL)
 	{
 			//printf("good\n");
@@ -605,8 +714,8 @@ int main(int argc, char *argv[])
 // 		printf("2--%i\n", stack_a->data);
 // 		stack_a = stack_a->next;
 // 	}
-// //	printf("\nnumber moves == %i\n", count);
-// 	 if (count >= 5500 )
-// 	 	printf("\nyessessss   moves == %i\n", count);
+	//printf("\nnumber moves == %i\n", count);
+ 	 if (count >= 5400 )
+	 	printf("\nyessessss   moves == %i\n", count);
 }
 //nekdar nzid dik kediya libhal likayen fel file push swap yenka y pushi oyedfa3 lka3 mli yejbar rakem lakherani fe stack sghir elihwalakin khesni nzid mli ykon kidor f stac_a yejbarch chi wa7id kbir elih 
